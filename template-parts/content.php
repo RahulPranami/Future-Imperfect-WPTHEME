@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template part for displaying posts
  *
@@ -10,54 +11,61 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
+	<header>
+		<div class="title">
+			<h2><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p>
+		</div>
 		<?php
-		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title">', '</h1>' );
-		else :
-			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-		endif;
+		if ('post' === get_post_type()) :
+		?>
+			<div class="meta">
+				<!-- <time class="published" datetime="2015-11-01">November 1, 2015</time> -->
+				<?php future_imperfect_posted_on(); ?>
 
-		if ( 'post' === get_post_type() ) :
-			?>
-			<div class="entry-meta">
-				<?php
-				future_imperfect_posted_on();
-				future_imperfect_posted_by();
-				?>
-			</div><!-- .entry-meta -->
+				<a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))) ?>" class="author"><span class="name"><?php echo esc_html(get_the_author()) ?></span><img src="<?php echo get_template_directory_uri(); ?>/images/avatar.jpg" alt="" /></a>
+			</div>
 		<?php endif; ?>
-	</header><!-- .entry-header -->
+	</header>
 
 	<?php future_imperfect_post_thumbnail(); ?>
 
+	<?php the_excerpt(); ?>
+
+	<footer>
+		<ul class="actions">
+			<li>
+				<a href="<?php echo get_permalink(); ?>" class="button large">Continue Reading</a>
+			</li>
+		</ul>
+		<!-- <ul class="stats">
+			<li><a href="#">General</a></li>
+			<li><a href="#" class="icon solid fa-heart">28</a></li>
+			<li><a href="#" class="icon solid fa-comment">128</a></li>
+		</ul> -->
+		<ul class="stats">
+			<!-- <li><a href="#">General</a></li> -->
+			<!-- <li><a href="#" class="icon solid fa-heart">28</a></li> -->
+			<!-- <li><a href="#" class="icon solid fa-comment">128</a></li> -->
+			<?php future_imperfect_entry_footer(); ?>
+		</ul>
+	</footer>
+</article>
+
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+	<?php // future_imperfect_post_thumbnail();
+	?>
+
 	<div class="entry-content">
 		<?php
-		the_content(
-			sprintf(
-				wp_kses(
-					/* translators: %s: Name of current post. Only visible to screen readers */
-					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'future-imperfect' ),
-					array(
-						'span' => array(
-							'class' => array(),
-						),
-					)
-				),
-				wp_kses_post( get_the_title() )
-			)
-		);
 
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'future-imperfect' ),
+				'before' => '<div class="page-links">' . esc_html__('Pages:', 'future-imperfect'),
 				'after'  => '</div>',
 			)
 		);
 		?>
 	</div><!-- .entry-content -->
 
-	<footer class="entry-footer">
-		<?php future_imperfect_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

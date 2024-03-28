@@ -27,12 +27,12 @@ if ( ! function_exists( 'future_imperfect_posted_on' ) ) :
 
 		$posted_on = sprintf(
 			/* translators: %s: post date. */
-			esc_html_x( 'Posted on %s', 'post date', 'future-imperfect' ),
+			esc_html_x( '%s', 'post date', 'future-imperfect' ),
 			'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
 		);
 
-		echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
+		// echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $time_string;
 	}
 endif;
 
@@ -43,8 +43,8 @@ if ( ! function_exists( 'future_imperfect_posted_by' ) ) :
 	function future_imperfect_posted_by() {
 		$byline = sprintf(
 			/* translators: %s: post author. */
-			esc_html_x( 'by %s', 'post author', 'future-imperfect' ),
-			'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+			esc_html_x( '%s', 'post author', 'future-imperfect' ),
+			'<a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a>'
 		);
 
 		echo '<span class="byline"> ' . $byline . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -63,7 +63,7 @@ if ( ! function_exists( 'future_imperfect_entry_footer' ) ) :
 			$categories_list = get_the_category_list( esc_html__( ', ', 'future-imperfect' ) );
 			if ( $categories_list ) {
 				/* translators: 1: list of categories. */
-				printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'future-imperfect' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf( '<li>' . esc_html__( '%1$s', 'future-imperfect' ) . '</li>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			/* translators: used between list items, there is a space after the comma */
@@ -75,7 +75,8 @@ if ( ! function_exists( 'future_imperfect_entry_footer' ) ) :
 		}
 
 		if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
-			echo '<span class="comments-link">';
+			echo '<li>';
+			// echo '<span class="comments-link">';
 			comments_popup_link(
 				sprintf(
 					wp_kses(
@@ -90,7 +91,8 @@ if ( ! function_exists( 'future_imperfect_entry_footer' ) ) :
 					wp_kses_post( get_the_title() )
 				)
 			);
-			echo '</span>';
+			echo '</li>';
+			// echo '</span>';
 		}
 
 		edit_post_link(
@@ -127,16 +129,16 @@ if ( ! function_exists( 'future_imperfect_post_thumbnail' ) ) :
 		if ( is_singular() ) :
 			?>
 
-			<div class="post-thumbnail">
+			<div class="post-thumbnail image featured">
 				<?php the_post_thumbnail(); ?>
-			</div><!-- .post-thumbnail -->
+			</div>
 
 		<?php else : ?>
 
-			<a class="post-thumbnail" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+			<a class="post-thumbnail image featured" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 				<?php
 					the_post_thumbnail(
-						'post-thumbnail',
+						'full',
 						array(
 							'alt' => the_title_attribute(
 								array(
