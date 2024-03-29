@@ -13,26 +13,14 @@ if ( ! function_exists( 'future_imperfect_posted_on' ) ) :
 	 */
 	function future_imperfect_posted_on() {
 		$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-		if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-			$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-		}
 
 		$time_string = sprintf(
 			$time_string,
 			esc_attr( get_the_date( DATE_W3C ) ),
-			esc_html( get_the_date() ),
-			esc_attr( get_the_modified_date( DATE_W3C ) ),
-			esc_html( get_the_modified_date() )
+			esc_html( get_the_date() )
 		);
 
-		$posted_on = sprintf(
-			/* translators: %s: post date. */
-			esc_html_x( '%s', 'post date', 'future-imperfect' ),
-			'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
-		);
-
-		// echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $time_string;
+		echo $time_string; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 endif;
 
@@ -70,7 +58,7 @@ if ( ! function_exists( 'future_imperfect_entry_footer' ) ) :
 			$tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'future-imperfect' ) );
 			if ( $tags_list ) {
 				/* translators: 1: list of tags. */
-				printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'future-imperfect' ) . '</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf( '<li class="tags-links">' . esc_html__( 'Tagged %1$s', 'future-imperfect' ) . '</li>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 
@@ -108,8 +96,8 @@ if ( ! function_exists( 'future_imperfect_entry_footer' ) ) :
 				),
 				wp_kses_post( get_the_title() )
 			),
-			'<span class="edit-link">',
-			'</span>'
+			'<li class="edit-link">',
+			'</li>'
 		);
 	}
 endif;
